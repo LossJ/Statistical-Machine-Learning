@@ -47,3 +47,5 @@ conflicts with your own Python environment.
 >> - [2.3 Build LinearRegressor, Ridge, SGDRegressor, LWLR models with NumPy](02.3.LinearRegression-numpy.ipynb)
 >> - [2.4 Build LinearRegressor, Ridge, SGDRegressor, LWLR models with TensorFlow2.x](02.4.LinearRegression-tf2.ipynb)
 >> - [2.5 Build LinearRegressor, Ridge, SGDRegressor, LWLR models with PyTorch1.x](02.5.LinearRegression-torch1.ipynb)
+> - ##### 3 Logistc Regression
+>> - [3.1 Principle of Logistic Regression model](03.1.LogisticRegression.ipynb)
