@@ -1,5 +1,4 @@
-from collections import Iterable
-
+from collections.abc import Iterable
 
 import numpy as np
 import tensorflow as tf
@@ -12,9 +11,9 @@ class NumpyKNNBase:
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A np.ndarray matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A np.ndarray array of (sample_lenght, ) shape,
+        _y_train: label data for training. A np.ndarray array of (n_samples, ) shape,
             data type must be discrete value.
     """
 
@@ -42,15 +41,12 @@ class NumpyKNNBase:
             raise ValueError(f'No such metric as {metric}, please option from: {"manhattan", "euclidean", "chebyshev"}')
         self._X_train, self._y_train = [None] * 2
 
-    def __new__(cls):
-        raise Exception("Can't instantiate an object from NumpyKNNBase class! ")
-
     def fit(self, X_train, y_train):
         """method for training model.
 
         Args:
-            X_train: A np.ndarray matrix of (sample_lenght, feature_lenght) shape, data type must be continuous value type.
-            y_train: A np.ndarray array of (sample_lenght, ) shape.
+            X_train: A np.ndarray matrix of (n_samples, n_features) shape, data type must be continuous value type.
+            y_train: A np.ndarray array of (n_samples, ) shape.
 
         Raises:
             AssertionError: X_train value or y_train value with a mismatched shape.
@@ -64,8 +60,8 @@ class NumpyKNNBase:
         """predict test data.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
-                or a np.ndarray array of (feature_lenght, ) shape.
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape,
+                or a np.ndarray array of (n_features, ) shape.
 
         Returns:
             A list for samples predictions or a single prediction.
@@ -118,15 +114,11 @@ class TFKNNBase:
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A tf.Tensor matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A tf.Tensor matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A tf.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A tf.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        raise Exception("Can't instantiate an object from TFKNNBase! ")
-
     def __init__(self, n_neighbors=5, metric="euclidean"):
         """Init method.
 
@@ -155,23 +147,23 @@ class TFKNNBase:
         """method for training model.
 
         Args:
-            X_train: A matrix of (sample_lenght, feature_lenght) shape, data type must be continuous value type.
-            y_train: A array of (sample_lenght, ) shape.
+            X_train: A matrix of (n_samples, n_features) shape, data type must be continuous value type.
+            y_train: A array of (n_samples, ) shape.
 
         Raises:
             AssertionError: X_train value or y_train value with a mismatched shape.
         """
         assert isinstance(X_train, Iterable) and isinstance(y_train, Iterable)
         assert len(X_train) == len(y_train)
-        self._X_train = tf.convert_to_tensor(X_train, dtype=tf.dtypes.float32)
-        self._y_train = y_train if isinstance(y_train, tf.Tensor) else tf.convert_to_tensor(y_train)
+        self._X_train = tf.constant(X_train, dtype=tf.float32)
+        self._y_train = y_train if isinstance(y_train, tf.Tensor) else tf.constant(y_train)
 
     def predict(self, X_test):
         """predict test data.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
-                or a np.ndarray array of (feature_lenght, ) shape.
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape,
+                or a np.ndarray array of (n_features, ) shape.
 
         Returns:
             A list for samples predictions or a single prediction.
@@ -180,7 +172,7 @@ class TFKNNBase:
             ValueError: X_test value with a mismatched shape.
         """
         assert isinstance(X_test, Iterable)
-        X_test = tf.convert_to_tensor(X_test, dtype=tf.dtypes.float32)
+        X_test = tf.constant(X_test, dtype=tf.float32)
 
         if X_test.shape == (self._X_train.shape[1],):
             y_pred = self._predict_sample(X_test)
@@ -213,8 +205,8 @@ class TFKNNBase:
     def _score_validation(self, X_test, y_test):
         assert isinstance(X_test, Iterable) and isinstance(y_test, Iterable)
         assert len(X_test) == len(y_test)
-        X_test = tf.convert_to_tensor(X_test, dtype=tf.dtypes.float32)
-        y_test = y_test if isinstance(y_test, tf.Tensor) else tf.convert_to_tensor(y_test)
+        X_test = tf.constant(X_test, dtype=tf.float32)
+        y_test = y_test if isinstance(y_test, tf.Tensor) else tf.constant(y_test)
         return X_test, y_test
 
 
@@ -224,14 +216,11 @@ class TorchKNNBase:
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A tf.Tensor matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A tf.Tensor matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A tf.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A tf.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        raise Exception("Can't instantiate an object from TorchKNNBase! ")
 
     def __init__(self, n_neighbors=5, metric="euclidean"):
         """Init method.
@@ -261,8 +250,8 @@ class TorchKNNBase:
         """method for training model.
 
         Args:
-            X_train: A matrix of (sample_lenght, feature_lenght) shape, data type must be continuous value type.
-            y_train: A array of (sample_lenght, ) shape.
+            X_train: A matrix of (n_samples, n_features) shape, data type must be continuous value type.
+            y_train: A array of (n_samples, ) shape.
 
         Raises:
             AssertionError: X_train value or y_train value with a mismatched shape.
@@ -276,8 +265,8 @@ class TorchKNNBase:
         """predict test data.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
-                or a np.ndarray array of (feature_lenght, ) shape.
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape,
+                or a np.ndarray array of (n_features, ) shape.
 
         Returns:
             A list for samples predictions or a single prediction.

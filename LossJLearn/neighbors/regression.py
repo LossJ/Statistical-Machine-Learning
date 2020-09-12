@@ -1,6 +1,5 @@
 from .base import NumpyKNNBase, TFKNNBase, TorchKNNBase
 
-
 import numpy as np
 import tensorflow as tf
 import torch
@@ -12,21 +11,18 @@ class NumpyKNNRegressor(NumpyKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A np.ndarray matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A np.ndarray array of (sample_lenght, ) shape,
+        _y_train: label data for training. A np.ndarray array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return R^2, R^2 = 1 - u / v. u = sum((y_pred - y_true)^2), v = sum((y_true - y_true_mean)^2)
@@ -52,21 +48,18 @@ class TFKNNRegressor(TFKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A tf.Tensor matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A tf.Tensor matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A tf.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A tf.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return R^2, R^2 = 1 - u / v. u = sum((y_pred - y_true)^2), v = sum((y_true - y_true_mean)^2)
@@ -92,21 +85,18 @@ class TorchKNNRegressor(TorchKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A torch.Tensr matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A torch.Tensr matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A torch.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A torch.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return R^2, R^2 = 1 - u / v. u = sum((y_pred - y_true)^2), v = sum((y_true - y_true_mean)^2)

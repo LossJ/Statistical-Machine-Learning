@@ -1,6 +1,5 @@
 from collections import Counter
 
-
 from .base import NumpyKNNBase, TFKNNBase, TorchKNNBase
 
 
@@ -15,21 +14,18 @@ class NumpyKNNClassifier(NumpyKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A np.ndarray matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A np.ndarray matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A np.ndarray array of (sample_lenght, ) shape,
+        _y_train: label data for training. A np.ndarray array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return accuracy, a float number. accuracy = correct_count / y_test.shape[0]
@@ -53,21 +49,18 @@ class TFKNNClassifier(TFKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A tf.Tensor matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A tf.Tensor matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A tf.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A tf.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return accuracy, a float number. accuracy = correct_count / y_test.shape[0]
@@ -75,7 +68,7 @@ class TFKNNClassifier(TFKNNBase):
         X_test, y_test = self._score_validation(X_test, y_test)
 
         y_pred = self.predict(X_test)
-        correct_count = tf.reduce_sum(tf.cast(y_pred == y_test, dtype=tf.dtypes.int32))
+        correct_count = tf.reduce_sum(tf.cast(y_pred == y_test, dtype=tf.int32))
         accuracy = correct_count / y_test.shape[0]
         return accuracy.numpy()
 
@@ -91,21 +84,18 @@ class TorchKNNClassifier(TorchKNNBase):
     Attributes:
         n_neighbors: A int number, number of neighbors.
         _metric: A method object, choose from {_manhattan_distance, _euclidean_distance, _chebyshev_distance}.
-        _X_train: feature data for training. A torch.Tensor matrix of (sample_lenght, feature_lenght) shape,
+        _X_train: feature data for training. A torch.Tensor matrix of (n_samples, n_features) shape,
             data type must be continuous value type.
-        _y_train: label data for training. A torch.Tensor array of (sample_lenght, ) shape,
+        _y_train: label data for training. A torch.Tensor array of (n_samples, ) shape,
             data type must be discrete value.
     """
-
-    def __new__(cls):
-        return object.__new__(cls)
 
     def score(self, X_test, y_test):
         """Use test dataset to evaluate the trained model.
 
         Args:
-            X_test: A np.ndarray matrix of (sample_lenght, feature_lenght) shape.
-            y_test: A np.ndarray array of (sample_lenght, ) shape. data type must be
+            X_test: A np.ndarray matrix of (n_samples, n_features) shape.
+            y_test: A np.ndarray array of (n_samples, ) shape. data type must be
                 discrete value.
         Returns:
             return accuracy, a float number. accuracy = correct_count / y_test.shape[0]
